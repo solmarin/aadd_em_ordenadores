@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<comandes>
+	<comanda idCliente="1111" statusComanda="A">  
+	   <articulo>
+	      <id>10000</id>
+	      <unidades>500</unidades>  
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>1.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>   
+	   <articulo>
+	      <id>10001</id>
+	      <unidades>350</unidades>      
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>1.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>   
+	</comanda>
+	<comanda idCliente="2222" statusComanda="A">  
+	   <articulo>
+	      <id>10002</id>
+	      <unidades>500</unidades>  
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>2.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>   
+	   <articulo>
+	      <id>10004</id>
+	      <unidades>350</unidades>      
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>2.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>  
+	</comanda>
+	<comanda idCliente="2222" statusComanda="B">  
+	   <articulo>
+	      <id>10003</id>
+	      <unidades>500</unidades>  
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>2.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>   
+	   <articulo>
+	      <id>10006</id>
+	      <unidades>350</unidades>      
+	      <unidadesServidas>0</unidadesServidas>
+	      <precioUnitario>3.0</precioUnitario>
+	      <statusLC>False</statusLC>
+	   </articulo>  
+	</comanda>
+</comandes>
