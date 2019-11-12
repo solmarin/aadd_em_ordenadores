@@ -53,6 +53,13 @@ public class Cliente {
 		public void setCp(int cp) {
 			this.cp = cp;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("Cliente [nombreEmpresa=%s, cif=%s, direccion=%s, poblacion=%s, cp=%s]", nombreEmpresa,
+					cif, direccion, poblacion, cp);
+		}
+		
 		
 
 }

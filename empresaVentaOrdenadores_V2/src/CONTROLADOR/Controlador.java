@@ -1,8 +1,11 @@
 package CONTROLADOR;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import DATOS.LectorXML;
 import DATOS.SQLClientes;
+import MODELO.Cliente;
+import MODELO.LC;
 
 /**
  * Programa principal del programa, actualmente se encarga de mostrar por pantalla todos los objetos rellenados apartir de un xml. 
@@ -22,9 +25,12 @@ public class Controlador {
 		**/
 		
 		SQLClientes sqlclientes = new SQLClientes();
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		clientes = sqlclientes.consultaClientes("clientes");
+		for(int i=0; clientes.size()>i;++i) System.out.println(clientes.get(i).toString());
 		
-		sqlclientes.consultaClientes("clientes");
-		sqlclientes.insertaClientes( "PruevaInfo", "A-11111111","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295"));
+		
+		//sqlclientes.insertaClientes( "PruevaInfo", "A-11111111","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295"));
 		
 	
 		

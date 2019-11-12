@@ -4,6 +4,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import MODELO.Cliente;
 
 public class SQLClientes {
 
@@ -12,7 +15,7 @@ public class SQLClientes {
 	String nombreTabla;
 	String nombreEmpresa, cif, direccion, poblacion;
 	int cp;
-
+	ArrayList<Cliente> aClientes = new ArrayList <Cliente>(); 
 
 	public void conectar() {
 
@@ -56,7 +59,7 @@ public class SQLClientes {
 
 	}
 
-	public void consultaClientes(String nombreTabla) throws SQLException {
+	public ArrayList<Cliente> consultaClientes(String nombreTabla) throws SQLException {
 
 		conectar();
 		sentencia = c.createStatement();
@@ -72,19 +75,25 @@ public class SQLClientes {
 				String direccion = rs.getString("direccion");
 				String poblacion = rs.getString("poblacion");
 				int cp = rs.getInt("cp");
-
-				System.out.println(" CIF: "+ cif + " Nombre empresa : " + nombreEmpresa + " Direccion: "+direccion+" Poblacion: "+poblacion+" CP: "+cp);
+				
+				aClientes.add(new Cliente(cif, nombreEmpresa, direccion, poblacion, cp));
 
 			}
-
+		
 			rs.close();
 			sentencia.close();
 			c.close();
+			return aClientes;
+		
 
 		} catch (Exception e) {
 			System.out.println("ERROR AL RECUPERAR DATOS: "+e.getLocalizedMessage());
+			return aClientes;
 
 		}
+		
 	}
+
+	
 
 }
