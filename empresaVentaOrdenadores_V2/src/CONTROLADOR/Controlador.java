@@ -24,6 +24,7 @@ public class Controlador {
 		SQLClientes sqlclientes = new SQLClientes();
 		
 		sqlclientes.consultaClientes("clientes");
+		sqlclientes.insertaClientes( "PruevaInfo", "A-11111111","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295"));
 		
 	
 		

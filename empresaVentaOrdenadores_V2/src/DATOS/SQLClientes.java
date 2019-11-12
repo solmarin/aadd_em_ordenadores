@@ -30,7 +30,7 @@ public class SQLClientes {
 
 	}
 
-/**
+
 	public void insertaClientes( String nombreEmpresa, String cif,String direccion, String poblacion, int cp) throws SQLException {
 	
 		this.nombreEmpresa = nombreEmpresa;
@@ -39,11 +39,7 @@ public class SQLClientes {
 		this.poblacion=poblacion;
 		this.cp = cp;
 		
-		String sqlInsert = "INSERT INTO cliente(cif, nombreEmpresa, direccion, poblacion, cp) "
-
-		            	+ "VALUES(cif, raoSocial, localitat, adreça, cp, personaContacte, telefon, correuElectronic, deutor);";
-
-		
+		String sqlInsert = "INSERT INTO clientes(nombreEmpresa, cif,direccion, poblacion, cp) VALUES('"+this.nombreEmpresa+"','"+this.cif+"','"+this.direccion+"','"+this.poblacion+"',"+this.cp+");";
 
 		try {
 
@@ -55,11 +51,10 @@ public class SQLClientes {
 			System.out.println("Datos insertados");
 
 		} catch (Exception e) {
-			System.out.println("Error al insertar datos en la tabla");
+			System.out.println("ERROR AL INSERTAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
 		}
 
 	}
-**/
 
 	public void consultaClientes(String nombreTabla) throws SQLException {
 
