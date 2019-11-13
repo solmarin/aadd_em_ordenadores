@@ -24,14 +24,18 @@ public class Controlador {
 		System.out.println(lectorXML.csToString());
 		**/
 		
+		//insertamos un cliente
 		SQLClientes sqlclientes = new SQLClientes();
+		sqlclientes.insertaClientes(new Cliente("PruevaInfo3", "A-11111113","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295")));
+		//borramos un cliente
+		sqlclientes.deleteClientes("A-11111113");
+		//modificamos un cliente
+		sqlclientes.updateClientes("A-11111112","PruevaM2");
+		//mostramos los clientes
+		System.out.println("CLIENTES");
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 		clientes = sqlclientes.consultaClientes("clientes");
-		for(int i=0; clientes.size()>i;++i) System.out.println(clientes.get(i).toString());
-		
-		
-		//sqlclientes.insertaClientes( "PruevaInfo", "A-11111111","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295"));
-		
+		System.out.println(clientes.toString());
 	
 		
 	}

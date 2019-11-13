@@ -12,10 +12,8 @@ public class SQLClientes {
 
 	Connection c = null;
 	Statement sentencia = null;
-	String nombreTabla;
-	String nombreEmpresa, cif, direccion, poblacion;
-	int cp;
 	ArrayList<Cliente> aClientes = new ArrayList <Cliente>(); 
+
 
 	public void conectar() {
 
@@ -34,15 +32,10 @@ public class SQLClientes {
 	}
 
 
-	public void insertaClientes( String nombreEmpresa, String cif,String direccion, String poblacion, int cp) throws SQLException {
+	public void insertaClientes(Cliente cli) throws SQLException {
 	
-		this.nombreEmpresa = nombreEmpresa;
-		this.cif = cif;
-		this.direccion = direccion;
-		this.poblacion=poblacion;
-		this.cp = cp;
 		
-		String sqlInsert = "INSERT INTO clientes(nombreEmpresa, cif,direccion, poblacion, cp) VALUES('"+this.nombreEmpresa+"','"+this.cif+"','"+this.direccion+"','"+this.poblacion+"',"+this.cp+");";
+		String sqlInsert = "INSERT INTO clientes(nombreEmpresa, cif,direccion, poblacion, cp) VALUES('"+cli.getNombreEmpresa()+"','"+cli.getCif()+"','"+cli.getDireccion()+"','"+cli.getPoblacion()+"',"+cli.getCp()+");";
 
 		try {
 
@@ -55,6 +48,44 @@ public class SQLClientes {
 
 		} catch (Exception e) {
 			System.out.println("ERROR AL INSERTAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
+		}
+
+	}
+	
+	public void deleteClientes(String cif) throws SQLException {
+		
+		String sqlDelet = "DELETE FROM clientes WHERE cif = '"+cif+"'";
+
+		try {
+
+			conectar();
+			sentencia = c.createStatement();
+			sentencia.executeUpdate(sqlDelet);
+			sentencia.close();
+			c.close();
+			System.out.println("Datos eliminados");
+
+		} catch (Exception e) {
+			System.out.println("ERROR AL BORRAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
+		}
+
+	}
+	
+	public void updateClientes(String cif,String nombreEmpresa) throws SQLException {
+		
+		String sqlUp = "UPDATE clientes SET nombreEmpresa ='"+nombreEmpresa+"'WHERE cif = '"+cif+"'";
+
+		try {
+
+			conectar();
+			sentencia = c.createStatement();
+			sentencia.executeUpdate(sqlUp);
+			sentencia.close();
+			c.close();
+			System.out.println("Datos actualizados");
+
+		} catch (Exception e) {
+			System.out.println("ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
 		}
 
 	}
@@ -76,22 +107,21 @@ public class SQLClientes {
 				String poblacion = rs.getString("poblacion");
 				int cp = rs.getInt("cp");
 				
-				aClientes.add(new Cliente(cif, nombreEmpresa, direccion, poblacion, cp));
+				aClientes.add(new Cliente(nombreEmpresa,cif,direccion, poblacion, cp));
 
 			}
 		
 			rs.close();
 			sentencia.close();
 			c.close();
-			return aClientes;
-		
+		 
 
 		} catch (Exception e) {
 			System.out.println("ERROR AL RECUPERAR DATOS: "+e.getLocalizedMessage());
-			return aClientes;
-
+			
 		}
-		
+		return aClientes;
+
 	}
 
 	
