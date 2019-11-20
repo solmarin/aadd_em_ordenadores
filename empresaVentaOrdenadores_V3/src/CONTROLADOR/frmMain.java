@@ -14,6 +14,9 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmMain {
 
@@ -55,22 +58,21 @@ public class frmMain {
 		frmSolcomputerSl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBackground(new Color(100, 149, 237));
+		menuBar.setBackground(new Color(173, 216, 230));
 		frmSolcomputerSl.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
 		JMenu mnOpcions = new JMenu("MENU");
 		menuBar.add(mnOpcions);
 		
-		JMenuItem mntmGestiDeClients = new JMenuItem("Gestió de clients");
-		mntmGestiDeClients.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		JButton btnNewButton = new JButton("Gestió Clients");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				frmClientes frmClientes = new frmClientes();
 				frmClientes.newScreen();
-				
 			}
 		});
-		mnOpcions.add(mntmGestiDeClients);
+		mnOpcions.add(btnNewButton);
+		
 	}
 
 }
