@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 public class frmMain {
 
 	private JFrame frmSolcomputerSl;
+	private  int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2;
+    private int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2;
 
 	/**
 	 * Launch the application.
@@ -54,7 +56,7 @@ public class frmMain {
 		frmSolcomputerSl.setFont(new Font("aakar", Font.BOLD, 12));
 		frmSolcomputerSl.getContentPane().setFont(new Font("Impact", Font.BOLD, 12));
 		frmSolcomputerSl.setTitle("SolComputer SL");
-		frmSolcomputerSl.setBounds(100, 100, 450, 300);
+		frmSolcomputerSl.setBounds(500, 200, ancho, alto);
 		frmSolcomputerSl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
