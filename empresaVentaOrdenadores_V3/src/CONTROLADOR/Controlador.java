@@ -24,7 +24,7 @@ public class Controlador {
 		System.out.println(lectorXML.csToString());
 		**/
 		
-		//insertamos un cliente
+	/**	//insertamos un cliente
 		SQLClientes sqlclientes = new SQLClientes();
 		sqlclientes.insertaClientes(new Cliente("PruevaInfo3", "A-11111113","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295")));
 		//borramos un cliente
@@ -36,7 +36,7 @@ public class Controlador {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 		clientes = sqlclientes.consultaClientes("clientes");
 		System.out.println(clientes.toString());
-	
+	*/
 		
 	}
 
