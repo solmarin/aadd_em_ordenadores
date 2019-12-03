@@ -44,6 +44,7 @@ public class frmClientes {
 	private ArrayList<Cliente> clientes;
 	private Object[] celdas;
 	private DefaultTableModel model;
+	private boolean delete = false;
 	/**
 	 * Launch the application.
 	 */
@@ -64,7 +65,6 @@ public class frmClientes {
 	 * Create the application.
 	 */
 	public frmClientes() {
-		sqlclientes = new SQLClientes();
 		initialize();
 		
 	}
@@ -76,12 +76,15 @@ public class frmClientes {
 	private void initialize() {
 		
 		try {
+			sqlclientes = new SQLClientes();
 			//crear la ventana
 			this.pantallaBotones();
 		    //creamos el modelo de tabla y la tabla
 		    this.crearModeloYTabla();
 			//llenamos el modelo de tabla
-			this.select();
+
+			 select();
+ 
 		    
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -185,11 +188,17 @@ public class frmClientes {
 			button_1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					añadir();
+					add();
 				}
 			});
 			
 			button_2 = new JButton("Eliminar");
+			button_2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					delete = true;
+				}
+			});
 			button_2.setFont(new Font("Dialog", Font.BOLD, 8));
 			button_2.setBounds(247, 452, 99, 35);
 			frmSolcomputerSl.getContentPane().add(button_2);
@@ -230,13 +239,23 @@ public class frmClientes {
 				txtPoblacion.setText(String.valueOf(table.getValueAt(seleccion, 3)));
 				txtCP.setText(String.valueOf(table.getValueAt(seleccion, 4)));
 				
+				if(delete) {
+					try {
+					sqlclientes.deleteClientes(String.valueOf(table.getValueAt(seleccion, 0)));
+					delete = false;
+					refresh();
+					}catch (NumberFormatException | SQLException f) {
+						f.printStackTrace();
+						
+					}
+				}
+				
 			}
 		});
 	}
-
 	public void select() {
 		try {
-		 for(Cliente c: sqlclientes.consultaClientes("Clientes")) {
+			for(Cliente c: sqlclientes.consultaClientes("Clientes")) {
 		    	if(c != null) {
 		    	String cif = c.getCif();
 		    	String nE = c.getNombreEmpresa();
@@ -246,28 +265,34 @@ public class frmClientes {
 				model.addRow(new Object[] {cif,nE,d,p,cp});
 		    	}  	
 		    }
-		 } catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		 }
-		 	
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void añadir() {
+	public void add() {
 		try {
 			sqlclientes.insertaClientes(new Cliente(txtEmpresa.getText(), txtCif.getText(),txtDireccion.getText(),txtPoblacion.getText(), Integer.parseInt(txtCP.getText())));
-		//initialize();
 			txtCif.setText("");
 			txtEmpresa.setText("");
 			txtDireccion.setText("");
 			txtPoblacion.setText("");
 			txtCP.setText("");
+			refresh();
 		} catch (NumberFormatException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
+	
+	public void refresh() {
+		frmClientes window = new frmClientes();
+		window.frmSolcomputerSl.setVisible(true);
+		frmSolcomputerSl.setVisible(false);
+	}
 }
+
 
 
 

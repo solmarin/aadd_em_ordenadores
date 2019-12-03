@@ -23,6 +23,7 @@ public class frmMain {
 	private JFrame frmSolcomputerSl;
 	private  int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2;
     private int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2;
+	private frmClientes frmClientes = new frmClientes();
 
 	/**
 	 * Launch the application.
@@ -69,7 +70,6 @@ public class frmMain {
 		JButton btnNewButton = new JButton("Gestió Clients");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmClientes frmClientes = new frmClientes();
 				frmClientes.newScreen();
 			}
 		});
