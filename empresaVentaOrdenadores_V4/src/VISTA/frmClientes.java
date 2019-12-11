@@ -8,8 +8,11 @@ import java.awt.Window.Type;
 import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import CONTROLADOR.frmMain;
 import DATOS.SQLClientes;
 import MODELO.Cliente;
 import javax.swing.border.LineBorder;
@@ -40,21 +43,23 @@ public class frmClientes {
 	 JButton button_1;
 	 JButton button_2;
 	 JButton button_3;
+	 JButton button_4;
 	 SQLClientes sqlclientes;
 	 ArrayList<Cliente> clientes;
 	 Object[] celdas;
 	 DefaultTableModel model;
 	 int seleccion;
 	 boolean editar = false;
-	 boolean seguroDel = false;
+	 boolean añadir = false;
+	 frmClientes window;
+	
 	
 	 // Launch the application.
-	 
 	public void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frmClientes window = new frmClientes();
+					window = new frmClientes();
 					window.frmC.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -196,6 +201,11 @@ public class frmClientes {
 			button_3.setBounds(694, 452, 90, 35);
 			frmC.getContentPane().add(button_3);
 			
+			button_4 = new JButton("Cancelar");
+			button_4.setFont(new Font("Dialog", Font.BOLD, 8));
+			button_4.setBounds(794, 452, 90, 35);
+			frmC.getContentPane().add(button_4);
+			
 			//editar un cliente
 			button.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -216,16 +226,18 @@ public class frmClientes {
 					txtDireccion.setEnabled(true);
 					txtPoblacion.setEnabled(true);
 					txtCP.setEnabled(true);
+					añadir = true;
 				
 				}
 			});
+			
 			//borrar un cliente
 			button_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					frmSaveDelete frmSaveDelete = new frmSaveDelete(frmClientes); /*********** pasar el frmclientes y cojer los parametros de aqui*****/
-					frmSaveDelete.frmSD.setVisible(true);
-					if(seguroDel) delete();
-					else System.out.println("no funciona el delete");
+					 int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro que quieres eliminar el cliente?","BORRAR CLIENTE",JOptionPane.YES_NO_OPTION);
+					 if(dialogResult == JOptionPane.YES_OPTION){
+						   delete();
+						 }
 				}
 			});
 			
@@ -233,11 +245,32 @@ public class frmClientes {
 			//control del save
 			button_3.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent j) {
-					if(editar) edit();
-					else add();
+					
+					if(editar) {
+						edit();
+						select(); 
+					} 
+					if(añadir) {
+						add();
+						select(); 
+					}
+					
+					if(!añadir && !editar) JOptionPane.showConfirmDialog(null, "Error al guardar: no hay ninguna acción selecionada.", "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+					
 					noEditable();
 				}
 			});
+			
+			//cancelar un evento
+			button_4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					frmClientes frmClientes = new frmClientes();
+					frmClientes.frmC.setVisible(true);
+					frmC.setVisible(false);
+					JOptionPane.showConfirmDialog(null, "Cambios no guardados.", "Cancelar", JOptionPane.DEFAULT_OPTION);
+				}
+			});
+			
 			
 	}
 	
@@ -257,7 +290,6 @@ public class frmClientes {
 		frmC.getContentPane().add(scroll);
 	    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	    table.getTableHeader().setReorderingAllowed(false);
-	    
 	    select();
 	    
 	  //mostrar en los campos txt los datos de la fila seleccionada
@@ -276,6 +308,7 @@ public class frmClientes {
 
 	public void select() {
 		try {
+		 model.setRowCount(0);
 		 sqlclientes = new SQLClientes();
 		 for(Cliente c: sqlclientes.consultaClientes("Clientes")) {
 		    	if(c != null) {
@@ -288,7 +321,6 @@ public class frmClientes {
 		    	}  	
 		    }
 		 } catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 		 }
 		 	
@@ -298,10 +330,7 @@ public class frmClientes {
 		try {
 			sqlclientes = new SQLClientes();
 			sqlclientes.insertaClientes(new Cliente(txtEmpresa.getText(), txtCif.getText(),txtDireccion.getText(),txtPoblacion.getText(), Integer.parseInt(txtCP.getText())));
-			model.setRowCount(0);
-			select(); 
 		} catch (NumberFormatException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
@@ -311,13 +340,24 @@ public class frmClientes {
 		try {
 			sqlclientes = new SQLClientes();
 			sqlclientes.updateClientes(txtCif.getText(),txtEmpresa.getText(),txtDireccion.getText(),txtPoblacion.getText(),Integer.parseInt(txtCP.getText()));
-			model.setRowCount(0);
-			select(); 
 		} catch (NumberFormatException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
+	public void delete() {
+		try {
+			sqlclientes = new SQLClientes();
+			sqlclientes.deleteClientes(String.valueOf(table.getValueAt(seleccion, 0)));
+			model.setRowCount(0);
+			select(); 
+		}catch (NumberFormatException | SQLException f) {
+			f.printStackTrace();
+			
+		}
+	
+	}
+	
 	
 	public void noEditable() {
 		txtCif.setEnabled(false);
@@ -326,6 +366,8 @@ public class frmClientes {
 		txtPoblacion.setEnabled(false);
 		txtCP.setEnabled(false);
 	}
+
+
 
 
 }
