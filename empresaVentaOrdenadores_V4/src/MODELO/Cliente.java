@@ -10,10 +10,10 @@ public class Cliente {
 		private String cif;
 		private String direccion;
 		private String poblacion;
-		private int cp;
+		private String cp;
 		
 	//Constructor
-		public Cliente( String nombreEmpresa, String cif, String direccion, String poblacion, int cp) {
+		public Cliente( String nombreEmpresa, String cif, String direccion, String poblacion, String cp) {
 			super();
 			this.nombreEmpresa = nombreEmpresa;
 			this.cif = cif;
@@ -47,10 +47,10 @@ public class Cliente {
 		public void setPoblacion(String poblacion) {
 			this.poblacion = poblacion;
 		}
-		public int getCp() {
+		public String getCp() {
 			return cp;
 		}
-		public void setCp(int cp) {
+		public void setCp(String cp) {
 			this.cp = cp;
 		}
 

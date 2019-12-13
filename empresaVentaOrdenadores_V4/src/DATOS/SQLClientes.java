@@ -71,7 +71,7 @@ public class SQLClientes {
 
 	}
 	
-	public void updateClientes(String cif,String nombreEmpresa,String direccion, String poblacion, int cp ) throws SQLException {
+	public void updateClientes(String cif,String nombreEmpresa,String direccion, String poblacion, String cp ) throws SQLException {
 		
 		String sqlUp = "UPDATE clientes SET nombreEmpresa ='"+nombreEmpresa+"', direccion = '"+direccion+"', poblacion ='"+poblacion+"', cp='"+cp+"' WHERE cif = '"+cif+"'";
 
@@ -105,7 +105,7 @@ public class SQLClientes {
 				String nombreEmpresa = rs.getString("nombreEmpresa");
 				String direccion = rs.getString("direccion");
 				String poblacion = rs.getString("poblacion");
-				int cp = rs.getInt("cp");
+				String cp = rs.getString("cp");
 				
 				aClientes.add(new Cliente(nombreEmpresa,cif,direccion, poblacion, cp));
 

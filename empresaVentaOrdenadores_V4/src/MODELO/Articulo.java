@@ -1,5 +1,5 @@
 package MODELO;
-import java.util.ArrayList;
+// import java.util.ArrayList;
 /**
  * Clase para tratar todos los atributos y metodos de un articulo.
  * @author Sol Marin
@@ -9,7 +9,7 @@ public class Articulo {
 	//Atributos
 		private String nombre;
 		private int idArticulo;
-		private ArrayList<Integer> idComponentes = new ArrayList<Integer>();
+		// private ArrayList<Integer> idComponentes = new ArrayList<Integer>();
 		private int unidades;
 		private double precio;
 		

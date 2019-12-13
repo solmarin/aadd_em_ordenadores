@@ -1,18 +1,13 @@
 package CONTROLADOR;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import java.awt.BorderLayout;
-import javax.swing.JMenuItem;
 import VISTA.frmClientes;
-
 import javax.swing.JMenu;
 import java.awt.Window.Type;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
