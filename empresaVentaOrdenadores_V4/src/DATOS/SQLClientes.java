@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import MODELO.Cliente;
 
 public class SQLClientes {
@@ -24,8 +26,7 @@ public class SQLClientes {
 			System.out.println("Exito al conectar con base de datos");
 
 		} catch (Exception e) {
-
-			System.out.println("Error al conectar con base de datos");
+			JOptionPane.showConfirmDialog(null, "ERROR AL CONECTAR A LA BASE DE DATOS: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
 
 		}
 
@@ -47,7 +48,7 @@ public class SQLClientes {
 			System.out.println("Datos insertados");
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL INSERTAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
+			JOptionPane.showConfirmDialog(null, "ERROR AL INSERTAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -66,7 +67,8 @@ public class SQLClientes {
 			System.out.println("Datos eliminados");
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL BORRAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
+			JOptionPane.showConfirmDialog(null, "ERROR AL BORRAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+		
 		}
 
 	}
@@ -85,7 +87,8 @@ public class SQLClientes {
 			System.out.println("Datos actualizados");
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getLocalizedMessage()+" "+e.getMessage());
+			JOptionPane.showConfirmDialog(null, "ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+			
 		}
 
 	}
@@ -117,7 +120,7 @@ public class SQLClientes {
 		 
 
 		} catch (Exception e) {
-			System.out.println("ERROR AL RECUPERAR DATOS: "+e.getLocalizedMessage());
+			JOptionPane.showConfirmDialog(null, "ERROR AL RECUPERAR DATOS: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
 			
 		}
 		return aClientes;

@@ -257,6 +257,7 @@ public class frmClientes {
 				txtPoblacion.setEnabled(true);
 				txtCP.setEnabled(true);
 				añadir = true;
+				
 				saveAndDelT();
 				
 				//callar otros botones
@@ -313,7 +314,9 @@ public class frmClientes {
 	    table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				seleccion = table.rowAtPoint(e.getPoint());
+				
 				txtCif.setText(String.valueOf(table.getValueAt(seleccion, 0)));
 				txtEmpresa.setText(String.valueOf(table.getValueAt(seleccion, 1)));
 				txtDireccion.setText(String.valueOf(table.getValueAt(seleccion, 2)));
@@ -353,7 +356,6 @@ public class frmClientes {
 				editar=false;
 				sqlclientes = new SQLClientes();
 				sqlclientes.insertaClientes(new Cliente(txtEmpresa.getText(), txtCif.getText(),txtDireccion.getText(),txtPoblacion.getText(), txtCP.getText()));
-			
 			} catch (NumberFormatException | SQLException e) {
 				JOptionPane.showMessageDialog(null, "No se ha introducido ningun campo para añadir.", "WARNING", JOptionPane.WARNING_MESSAGE);
 				
@@ -416,9 +418,9 @@ public class frmClientes {
 	//control de datos a entrar/editar
 	public boolean controlD() {		
 		if(txtCif.getText().length()<9 || txtCif.getText().length()>10) return true;
-		if(txtEmpresa.getText().length()<=0) return true;
-		if(txtDireccion.getText().length()<=0) return true;
-		if(txtPoblacion.getText().length()<=0) return true;
+		if(txtEmpresa.getText().isEmpty()) return true;
+		if(txtDireccion.getText().isEmpty()) return true;
+		if(txtPoblacion.getText().isEmpty()) return true;
 		if(txtCP.getText().length() != 5) return true;
 		return false;
 		
