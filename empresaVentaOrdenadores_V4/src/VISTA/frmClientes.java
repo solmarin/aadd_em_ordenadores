@@ -417,7 +417,7 @@ public class frmClientes {
 
 	//control de datos a entrar/editar
 	public boolean controlD() {		
-		if(txtCif.getText().length()<9 || txtCif.getText().length()>10) return true;
+		if(txtCif.getText().length()!=10) return true;
 		if(txtEmpresa.getText().isEmpty()) return true;
 		if(txtDireccion.getText().isEmpty()) return true;
 		if(txtPoblacion.getText().isEmpty()) return true;
