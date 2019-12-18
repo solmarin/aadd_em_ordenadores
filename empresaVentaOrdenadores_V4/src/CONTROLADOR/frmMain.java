@@ -70,7 +70,7 @@ public class frmMain {
 				menuBar.add(mnOpcions);
 				
 			//Evento: abrir ventana formulario clientes
-				btnNewButton = new JButton("Gestió Clients");
+				btnNewButton = new JButton("Gestión Clientes");
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						frmClientes frmClientes = new frmClientes();
