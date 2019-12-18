@@ -344,7 +344,7 @@ public class frmClientes {
 		//mostrar ayuda
 			button_5.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					JOptionPane.showConfirmDialog(null, "Añadir: \n Editar: \n Eliminar: \n Cancelar:\n Guardar:\n Contacto: solmarin1999@gmail.com","MANUAL DE USUARIO", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showConfirmDialog(null, " Añadir: clica editar y rellena los campos. Selecciona Guardar o cancelar al finalizar. \n Editar: clica editar y rellena los campos (el cif no se puede modifica). Selecciona Guardar o cancelar al finalizar. \n Eliminar: seleciona en la tabla un cliente, clica eliminar y confirma si estas seguro de eliminar. \n Cancelar: para cancelar toda opción que no se desea guardar. \n Guardar: al añadir y editar seleciona guardar para guardar los cambios. \n Contacto: solmarin1999@gmail.com","MANUAL DE USUARIO", JOptionPane.DEFAULT_OPTION);
 				}
 			});
 	    
