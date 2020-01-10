@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import java.awt.BorderLayout;
 import VISTA.frmClientes;
+import VISTA.frmComandas;
+
 import javax.swing.JMenu;
 import java.awt.Window.Type;
 import java.awt.Font;
@@ -23,7 +25,7 @@ public class frmMain {
 		private int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2;
 		JMenuBar menuBar;
 		JMenu mnOpcions;
-		JButton btnNewButton;
+		JButton btnNewButton, btnNewButton2;
 
 	/**
 	 * Launch the application.
@@ -78,6 +80,15 @@ public class frmMain {
 					}
 				});
 				mnOpcions.add(btnNewButton);
+				
+				btnNewButton2 = new JButton("Gestión Comandas");
+				btnNewButton2.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						frmComandas frmComandas = new frmComandas();
+						frmComandas.frmCo.setVisible(true);
+					}
+				});
+				mnOpcions.add(btnNewButton2);
 			
 	}
 

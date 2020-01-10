@@ -26,6 +26,15 @@ public class Comanda {
 			this.fechaE = fechaE;
 			this.productosSeleccionados=productosSeleccionados;
 		}
+	//constructor xml
+		public Comanda(int idComanda, String idCliente, String fechaE,char statusComanda, double preuTotal) {
+			super();
+			this.idComanda = idComanda;
+			this.idCliente = idCliente;
+			this.statusComanda = statusComanda;
+			this.fechaE = fechaE;
+			this.precioTotal = preuTotal;
+		}
 		
 	//Metodos
 		public int getIdComanda() {

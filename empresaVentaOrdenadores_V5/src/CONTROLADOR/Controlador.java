@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import DATOS.LectorXML;
+import DATOS.SQLArticulos;
 import DATOS.SQLClientes;
+import MODELO.Articulo;
 import MODELO.Cliente;
 import MODELO.LC;
 
@@ -17,14 +19,14 @@ public class Controlador {
 
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		LectorXML lectorXML = new LectorXML();
+		/*LectorXML lectorXML = new LectorXML();
 		System.out.println("----------------------------");
 	    System.out.println("MOSTRAMOS LOS OBJETOS");
 	    System.out.println("----------------------------");
 		System.out.println(lectorXML.csToString());
-
-	/*
-	//insertamos un cliente
+		
+	
+	   //insertamos un cliente
 		SQLClientes sqlclientes = new SQLClientes();
 		sqlclientes.insertaClientes(new Cliente("PruevaInfo3", "A-11111113","C. St. joan","St. vicenç de castellet", Integer.parseInt("08295")));
 		//borramos un cliente
@@ -37,7 +39,22 @@ public class Controlador {
 		clientes = sqlclientes.consultaClientes("clientes");
 		System.out.println(clientes.toString());
 
-	*/
+		
+		//insertar un articulo
+		SQLArticulos sqlar = new SQLArticulos();
+		sqlar.conectar();
+		sqlar.insertaArticulo(new Articulo("Prueva de articulo 1",10.5,100));
+		//modificamos un articulo
+		sqlar.updateArticulos(1, "modificacion 1", 100, 90);
+		//mostramos los articulos
+		ArrayList<Articulo> articulos = new ArrayList<Articulo>();
+		articulos = sqlar.consultaArticulos();
+		System.out.println(articulos.toString());
+		//borramos articulo
+		sqlar.deleteArticulos("1");
+		
+		*/
+		
 	}
 
 }

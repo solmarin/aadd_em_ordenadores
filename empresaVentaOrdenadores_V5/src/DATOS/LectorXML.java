@@ -20,7 +20,6 @@ public class LectorXML {
 	String date;	//donde guardaremos la fechaE (fecha inicial) 
 
 	public LectorXML(){
-
 			try {
 			    //Leer  archivo xml
 			       File inputFile = new File("datosComanda.xml");
@@ -44,21 +43,22 @@ public class LectorXML {
 							          if (nd.getNodeType() == Node.ELEMENT_NODE ) {
 							            Element eElement = (Element) nd;	//creamos un elemento desde el nodo de linea de comanda
 							           
-							     		lcs.add(new LC(	//rellenamos el arraylist con una nueva linea de comanda
-							     				Integer.parseInt(eElement.getElementsByTagName("id").item(0).getTextContent()),
-							     				Integer.parseInt(eElement.getElementsByTagName("unidades").item(0).getTextContent()),
+							            lcs.add(new LC( //rellenamos el arraylist con una nueva linea de comanda
+							            		Integer.parseInt(eElementC.getAttribute("idC")),
+							            		Integer.parseInt(eElement.getAttribute("articulo")),
+							            		Integer.parseInt(eElement.getElementsByTagName("unidades").item(0).getTextContent()),
 							     				Integer.parseInt(eElement.getElementsByTagName("unidadesServidas").item(0).getTextContent()),
-							     				Double.parseDouble(eElement.getElementsByTagName("precioUnitario").item(0).getTextContent()),
-							     				Integer.parseInt(doc.getDocumentElement().getAttribute("statusLC"))));
+							     				Integer.parseInt(eElement.getElementsByTagName("statusLC").item(0).getTextContent())
+							     				));
 							          }
 						    	     
 					    	      }
 					    	     
 					       cs.add(new Comanda( //rellenamos el arraylist de comanda con una nueva comanda
-				    	    		  eElementC.getAttribute("idCliente"),
+				    	    		  eElementC.getAttribute("idCliente").toString(),
 				    	    		  this.getLcs(),
 				    	    		  date,
-				    	    		 eElementC.getAttribute("statusComanda").charAt(0)));
+				    	    		  eElementC.getAttribute("statusComanda").charAt(0)));
 				      } 
 			     }       
 			    } catch (Exception e) {
@@ -70,10 +70,8 @@ public class LectorXML {
 		return this.lcs;
 	}
 	
-	
-	
 	public String csToString() {
-		return String.format("LectorXML [cs = %s]", cs);
+		return String.format("LectorXML [cs=%s]", cs);
 	}
 
 	

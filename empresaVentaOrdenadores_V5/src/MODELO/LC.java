@@ -9,27 +9,38 @@ public class LC {
 	//Atributos
 		private int idLC;
 		private int idC;
+		private int idArticulo;
 		private int unidades;
 		private int unidadesServidas;
-		private int StatusLC;
+		private int statusLC;
 		private double precioU;
 		private double precioTLC;
+		
 	//Constructor
-		public LC(int idLC, int unidades, int unidadesServidas,double precioU, int statusLC) {
+		public LC(int idLC, int idC, int idArticulo, int unidades, int unidadesServidas, int statusLC) {
 			super();
+			this.idC = idC;
 			this.idLC = idLC;
 			this.unidades = unidades;
 			this.unidadesServidas = unidadesServidas;
-			this.StatusLC = statusLC;
+			this.statusLC = statusLC;
 			this.precioU = precioU;
+			this.idArticulo = idArticulo;
+		}
+		
+	//constructor xml
+		public LC(int idC, int idArticulo, int unidades, int unidadesServidas, int statusLC) {
+			this.idC = idC;
+			this.idArticulo = idArticulo;
+			this.unidades = unidades;
+			this.unidadesServidas = unidadesServidas;
+			this.statusLC = statusLC;
 		}
 		
 	//Metodos
 		public int getIdLC() {
 			return idLC;
 		}
-
-		
 
 		public void setIdLC(int idLC) {
 			this.idLC = idLC;
@@ -53,11 +64,11 @@ public class LC {
 		}
 
 		public int isStatusLC() {
-			return StatusLC;
+			return statusLC;
 		}
 
 		public void setStatusLC(int statusLC) {
-			StatusLC = statusLC;
+			statusLC = statusLC;
 		}
 
 		public int getUnidadesServidas() {
@@ -86,10 +97,26 @@ public class LC {
 		}
 		
 
+		public int getIdArticulo() {
+			return idArticulo;
+		}
+
+		public void setIdArticulo(int idArticulo) {
+			this.idArticulo = idArticulo;
+		}
+
+		public int getStatusLC() {
+			return statusLC;
+		}
+
+		public void setPrecioTLC(double precioTLC) {
+			this.precioTLC = precioTLC;
+		}
+
 		@Override
 		public String toString() {
-			return String.format("		LC: idLC=%s,unidades=%s, unidadesServidas=%s, StatusLC=%s, precioU=%s€, precioTLC=%s\n",
-					idLC, unidades, unidadesServidas, StatusLC, precioU, precioTLC);
+			return String.format("		LC: idC=%s, idArticulo=%s, unidades=%s, unidadesServidas=%s, statusLC=%s\n",
+					idC, idArticulo, unidades, unidadesServidas, statusLC);
 		}
 
 

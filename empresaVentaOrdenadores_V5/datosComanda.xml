@@ -1,51 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <comandes>
-	<comanda idCliente="1111" statusComanda='0'>  
-	   <articulo>
-	      <id>10000</id>
+	<comanda idC='1' idCliente="1111" statusComanda="B">  
+	   <lc articulo="01">
 	      <unidades>500</unidades>  
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>1.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>   
-	   <articulo>
-	      <id>10001</id>
+	      <statusLC>0</statusLC>
+	   </lc>   
+	   <lc articulo="01">
 	      <unidades>350</unidades>      
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>1.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>   
+	      <statusLC>0</statusLC>
+	   </lc>   
 	</comanda>
-	<comanda idCliente="2222" statusComanda='0'>  
-	   <articulo>
-	      <id>10002</id>
+	<comanda idC='2' idCliente="2222" statusComanda="A">  
+	   <lc articulo='03'>
 	      <unidades>500</unidades>  
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>2.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>   
-	   <articulo>
-	      <id>10004</id>
+	      <statusLC>0</statusLC>
+	   </lc>   
+	   <lc articulo="01">
 	      <unidades>350</unidades>      
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>2.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>  
+	      <statusLC>0</statusLC>
+	   </lc>  
 	</comanda>
-	<comanda idCliente="3333" statusComanda='0'>  
-	   <articulo>
-	      <id>10003</id>
+	<comanda idC='3' idCliente="3333" statusComanda="A">  
+	   <lc articulo="01">
 	      <unidades>500</unidades>  
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>2.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>   
-	   <articulo>
-	      <id>10006</id>
+	      <statusLC>0</statusLC>
+	   </lc>   
+	   <lc articulo="01">
 	      <unidades>350</unidades>      
 	      <unidadesServidas>0</unidadesServidas>
-	      <precioUnitario>3.0</precioUnitario>
-	      <statusLC>False</statusLC>
-	   </articulo>  
+	      <statusLC>0</statusLC>
+	   </lc>  
 	</comanda>
 </comandes>
