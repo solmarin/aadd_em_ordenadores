@@ -19,13 +19,17 @@ public class Comanda {
 
 		
 	//Constructors
-		public Comanda(String idCliente,ArrayList<LC> productosSeleccionados, String fechaE,char statusComanda) {
+		public Comanda(String idCliente, char statusComanda,String fechaE, double preuTotal, ArrayList<LC>productosSeleccionados) {
 			super();
 			this.idCliente = idCliente;
 			this.statusComanda = statusComanda;
 			this.fechaE = fechaE;
-			this.productosSeleccionados=productosSeleccionados;
+			this.precioTotal = preuTotal;
+			this.productosSeleccionados = productosSeleccionados;
+			
 		}
+		
+
 	//constructor xml
 		public Comanda(int idComanda, String idCliente, String fechaE,char statusComanda, double preuTotal) {
 			super();
@@ -54,7 +58,7 @@ public class Comanda {
 		}
 
 
-		public int getStatusComanda() {
+		public char getStatusComanda() {
 			return statusComanda;
 		}
 

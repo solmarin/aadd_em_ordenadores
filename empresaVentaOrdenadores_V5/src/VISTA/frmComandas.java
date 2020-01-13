@@ -4,20 +4,21 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Window.Type;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import DATOS.SQLClientes;
-import MODELO.Cliente;
+import DATOS.LectorXML;
+import DATOS.SQLComandas;
+import MODELO.Comanda;
 
 public class frmComandas {
 	int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2;
@@ -26,6 +27,13 @@ public class frmComandas {
     public JFrame frmCo;
 	frmComandas window;
 	JTextField txtGC;
+	Object[] titulos = {"idComanda", "idCliente", "Status", "Precio Total", "Fecha entrada", "Fecha Salida"};
+	Object[] celdas;
+	JButton buttonXML;
+	JScrollPane scroll;
+	DefaultTableModel model; 
+	JTable table;
+	SQLComandas sqlcomandas;
 
 	/**
 	* Launch the application.
@@ -85,9 +93,81 @@ public class frmComandas {
 			txtGC.setColumns(10);
 			txtGC.setEditable(false);
 			frmCo.getContentPane().add(txtGC);
+			
+		//tabla 
+			scroll = new JScrollPane();
+			model = new DefaultTableModel(celdas,0){ 
+				public boolean isCellEditable(int rowIndex,int coluumnIndex) { return false;}
+				};
+			model.setColumnIdentifiers(titulos);
+			table = new JTable();
+			table.setModel(model);
+		    table.setFont(new Font("Dialog", Font.PLAIN, 16));
+			table.setBorder(new LineBorder(new Color(0, 0, 0)));
+			table.setRowHeight(18);
+			scroll.setViewportView(table);
+			scroll.setBounds(10, 40, 925, 150);;
+			table.setBackground(new Color(173, 216, 230));
+			frmCo.getContentPane().add(scroll);
+		    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		    table.getTableHeader().setReorderingAllowed(false);
+		    
+		  //bottones
+			buttonXML = new JButton("Insertar XML");
+			buttonXML.setFont(new Font("Dialog", Font.BOLD, 18));
+			buttonXML.setBounds(10, 440, 200, 50);
+			frmCo.getContentPane().add(buttonXML);
+			
+			actualizarComandas();
 		    
 	}
+	
 	public void eventos() {
+			
+		buttonXML.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					 LectorXML lectorXML = new LectorXML();
+					 sqlcomandas = new SQLComandas();
+					 for(int i = 0; i< lectorXML.getCS().size(); ++i) {
+						 sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
+						 	
+					    }
+					 actualizarComandas();
+					 } catch (NumberFormatException | SQLException e) {
+							e.printStackTrace();
+					 }
+				
+				
+			}
+			
+		});
 		
 	}
+	
+	public void actualizarComandas() {
+		try {
+			 model.setRowCount(0);
+			 sqlcomandas = new SQLComandas();
+			 for(Comanda c: sqlcomandas.consultaComandas()) {
+			    	if(c != null) {
+				    	int idComanda =  c.getIdComanda();
+						String idCliente = c.getIdCliente();
+						double precioTotal = c.getPrecioTotal();
+						char statusComanda = c.getStatusComanda();
+						String fechaE = c.getFechaE();
+						String fechaF = c.getFechaF();
+				    	
+				    	if(fechaF == null || fechaF.isEmpty()) fechaF ="--";
+				    	
+						model.addRow(new Object[] {Integer.toString(idComanda),idCliente,Character.toString(statusComanda),Double.toString(precioTotal),fechaE,fechaF});
+			    	}  	
+			    }
+			 } catch (NumberFormatException | SQLException e) {
+					e.printStackTrace();
+			 }
+	}
+	
+	
 }
+

@@ -1,6 +1,9 @@
 package DATOS;
 import MODELO.*;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -8,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.util.ArrayList;
+import java.util.Date;
 /**
  * Clase que lee arxivos xml y crea los arrays pertinentes para crear las clases necesarias (lineas de comanda y comanda).  
  * @author Sol Marin
@@ -17,7 +21,7 @@ public class LectorXML {
 	//Declarem variables
 	ArrayList<Comanda> cs = new ArrayList<Comanda>(); //donde guardamos las comandas
     ArrayList<LC> lcs; //donde guardamos las lineas de comandas
-	String date;	//donde guardaremos la fechaE (fecha inicial) 
+	SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");	//donde guardaremos la fechaE (fecha inicial) 
 
 	public LectorXML(){
 			try {
@@ -56,9 +60,12 @@ public class LectorXML {
 					    	     
 					       cs.add(new Comanda( //rellenamos el arraylist de comanda con una nueva comanda
 				    	    		  eElementC.getAttribute("idCliente").toString(),
-				    	    		  this.getLcs(),
-				    	    		  date,
-				    	    		  eElementC.getAttribute("statusComanda").charAt(0)));
+				    	    		  eElementC.getAttribute("statusComanda").charAt(0),
+				    	    		  date.format(new Date()),
+				    	    		  0,
+				    	    		  this.getLcs()
+					    		   ));
+					       
 				      } 
 			     }       
 			    } catch (Exception e) {
@@ -70,9 +77,10 @@ public class LectorXML {
 		return this.lcs;
 	}
 	
-	public String csToString() {
-		return String.format("LectorXML [cs=%s]", cs);
+	public ArrayList<Comanda> getCS(){
+		return this.cs;
 	}
+	
 
 	
 }

@@ -34,7 +34,7 @@ public class SQLComandas {
 public void insertaComandas(Comanda co) throws SQLException {
 	
 		
-		String sqlInsert = "INSERT INTO comandas(idCliente, fechaE, statusComanda, preuTotal) VALUES('"+co.getIdCliente()+"','"+co.getFechaE()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+");";
+		String sqlInsert = "INSERT INTO comandas(idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
 
 		try {
 
@@ -102,13 +102,13 @@ public ArrayList<Comanda> consultaComandas() throws SQLException {
 		ResultSet rs = sentencia.executeQuery(consultaSql);
 
 		while (rs.next()) {
-			int idComanda = rs.getInt("idC");
+			int idComanda = rs.getInt("idComanda");
 			String idCliente = rs.getString("idCliente");
 			String fechaE = rs.getString("fechaE");
 			char statusComanda = rs.getString("statusComanda").charAt(0);
-			int preuTotal = rs.getInt("preuTotal");
+			int precioTotal = rs.getInt("precioTotal");
 			
-			aComandas.add(new Comanda(idComanda, idCliente,fechaE,statusComanda,preuTotal));
+			aComandas.add(new Comanda(idComanda, idCliente,fechaE,statusComanda,precioTotal));
 
 		}
 	
