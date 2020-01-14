@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -18,7 +20,9 @@ import javax.swing.table.DefaultTableModel;
 
 import DATOS.LectorXML;
 import DATOS.SQLComandas;
+import DATOS.SQLLCs;
 import MODELO.Comanda;
+import MODELO.LC;
 
 public class frmComandas {
 	int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2;
@@ -28,12 +32,17 @@ public class frmComandas {
 	frmComandas window;
 	JTextField txtGC;
 	Object[] titulos = {"idComanda", "idCliente", "Status", "Precio Total", "Fecha entrada", "Fecha Salida"};
+	Object[] titulos2 = {"idComanda", "idLC", "idArticulo","unidades", "unidades servidas", "status"};
 	Object[] celdas;
 	JButton buttonXML;
 	JScrollPane scroll;
 	DefaultTableModel model; 
 	JTable table;
 	SQLComandas sqlcomandas;
+	JScrollPane scroll2;
+	DefaultTableModel model2;
+	JTable table2;
+	SQLLCs sqllcs;
 
 	/**
 	* Launch the application.
@@ -94,7 +103,7 @@ public class frmComandas {
 			txtGC.setEditable(false);
 			frmCo.getContentPane().add(txtGC);
 			
-		//tabla 
+		//tabla comandas
 			scroll = new JScrollPane();
 			model = new DefaultTableModel(celdas,0){ 
 				public boolean isCellEditable(int rowIndex,int coluumnIndex) { return false;}
@@ -111,6 +120,24 @@ public class frmComandas {
 			frmCo.getContentPane().add(scroll);
 		    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		    table.getTableHeader().setReorderingAllowed(false);
+		 
+		 //tabla LCs
+			scroll2 = new JScrollPane();
+			model2 = new DefaultTableModel(celdas,0){ 
+				public boolean isCellEditable(int rowIndex,int coluumnIndex) { return false;}
+				};
+			model2.setColumnIdentifiers(titulos2);
+			table2 = new JTable();
+			table2.setModel(model2);
+		    table2.setFont(new Font("Dialog", Font.PLAIN, 16));
+			table2.setBorder(new LineBorder(new Color(0, 0, 0)));
+			table2.setRowHeight(18);
+			scroll2.setViewportView(table2);
+			scroll2.setBounds(10, 200, 925, 150);;
+			table2.setBackground(new Color(173, 216, 230));
+			frmCo.getContentPane().add(scroll2);
+		    table2.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		    table2.getTableHeader().setReorderingAllowed(false);
 		    
 		  //bottones
 			buttonXML = new JButton("Insertar XML");
@@ -129,10 +156,16 @@ public class frmComandas {
 				try {
 					 LectorXML lectorXML = new LectorXML();
 					 sqlcomandas = new SQLComandas();
+					 sqllcs = new SQLLCs();
 					 for(int i = 0; i< lectorXML.getCS().size(); ++i) {
+						 for(int j= 0; j< lectorXML.getCS().size(); ++j) {
+							 sqllcs.insertaLC(lectorXML.getLCs().get(i));
+							 	
+						  }
 						 sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
 						 	
 					    }
+
 					 actualizarComandas();
 					 } catch (NumberFormatException | SQLException e) {
 							e.printStackTrace();
@@ -141,6 +174,19 @@ public class frmComandas {
 				
 			}
 			
+		});
+		
+		
+	//mostrar en los campos txt las lc de la comanda selecionada
+	    table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				seleccion = table.rowAtPoint(e.getPoint());
+				actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0)))); //mostramos lc con el id de la comanda
+				
+			
+			}
 		});
 		
 	}
@@ -168,6 +214,27 @@ public class frmComandas {
 			 }
 	}
 	
+	public void actualizarLCs(int id) {
+		try {
+			model2.setRowCount(0);
+			sqllcs = new SQLLCs();
+			for(LC c: sqllcs.consultaLCS(id)) {
+				if(c != null) {
+					int idLC = c.getIdLC();
+					int idC = c.getIdC();
+					int idArticulo = c.getIdArticulo();
+					int unidades = c.getUnidades();
+					int unidadesServidas = c.getUnidadesServidas();
+					int statusLC = c.getStatusLC();
+					
+					model2.addRow(new Object[] {idC, idLC, idArticulo, unidades, unidadesServidas, statusLC});
+				}
+			}
+			
+		}catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+	 }
+	}
 	
 }
 

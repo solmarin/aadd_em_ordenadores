@@ -19,8 +19,9 @@ public class Comanda {
 
 		
 	//Constructors
-		public Comanda(String idCliente, char statusComanda,String fechaE, double preuTotal, ArrayList<LC>productosSeleccionados) {
+		public Comanda(int idComanda,String idCliente, char statusComanda,String fechaE, double preuTotal, ArrayList<LC>productosSeleccionados) {
 			super();
+			this.idComanda = idComanda;
 			this.idCliente = idCliente;
 			this.statusComanda = statusComanda;
 			this.fechaE = fechaE;

@@ -34,7 +34,7 @@ public class SQLComandas {
 public void insertaComandas(Comanda co) throws SQLException {
 	
 		
-		String sqlInsert = "INSERT INTO comandas(idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
+		String sqlInsert = "INSERT INTO comandas(idComanda, idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdComanda()+"','"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
 
 		try {
 

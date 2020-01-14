@@ -94,11 +94,11 @@ public class SQLLCs {
 
 	}
 
-	public ArrayList<LC> consultaLCS() throws SQLException {
+	public ArrayList<LC> consultaLCS( int id) throws SQLException {
 
 		conectar();
 		sentencia = c.createStatement();
-		String consultaSql = "SELECT * FROM LCS;";
+		String consultaSql = "SELECT * FROM LCS WHERE idC='"+id+"';";
 
 		try {
 

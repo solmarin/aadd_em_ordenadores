@@ -59,11 +59,12 @@ public class LectorXML {
 					    	      }
 					    	     
 					       cs.add(new Comanda( //rellenamos el arraylist de comanda con una nueva comanda
+					    		   	  Integer.parseInt(eElementC.getAttribute("idC")),
 				    	    		  eElementC.getAttribute("idCliente").toString(),
 				    	    		  eElementC.getAttribute("statusComanda").charAt(0),
 				    	    		  date.format(new Date()),
 				    	    		  0,
-				    	    		  this.getLcs()
+				    	    		  this.getLCs()
 					    		   ));
 					       
 				      } 
@@ -73,7 +74,7 @@ public class LectorXML {
 			    }
 	 }
 
-	public ArrayList<LC> getLcs() {
+	public ArrayList<LC> getLCs() {
 		return this.lcs;
 	}
 	
