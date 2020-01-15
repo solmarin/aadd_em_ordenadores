@@ -156,16 +156,7 @@ public class frmComandas {
 				try {
 					 LectorXML lectorXML = new LectorXML();
 					 sqlcomandas = new SQLComandas();
-					 sqllcs = new SQLLCs();
-					 for(int i = 0; i< lectorXML.getCS().size(); ++i) {
-						 for(int j= 0; j< lectorXML.getCS().size(); ++j) {
-							 sqllcs.insertaLC(lectorXML.getLCs().get(i));
-							 	
-						  }
-						 sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
-						 	
-					    }
-
+					 for(int i = 0; i< lectorXML.getCS().size(); ++i) sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
 					 actualizarComandas();
 					 } catch (NumberFormatException | SQLException e) {
 							e.printStackTrace();

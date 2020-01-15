@@ -37,7 +37,7 @@ public class SQLLCs {
 	public void insertaLC(LC lc) throws SQLException {
 	
 		
-		String sqlInsert = "INSERT INTO LCS(idC, idArticulo, unidades, unidadesServidas, statusLC) VALUES('"+lc.getIdC()+"','"+lc.getIdArticulo()+"','"+lc.getUnidades()+"','"+lc.getUnidadesServidas()+"','"+lc.getStatusLC()+"');";
+		String sqlInsert = "INSERT INTO LCS(idC, idArticulo, unidades, unidadesServidas, statusLC, precioLC) VALUES('"+lc.getIdC()+"','"+lc.getIdArticulo()+"','"+lc.getUnidades()+"','"+lc.getUnidadesServidas()+"','"+lc.getStatusLC()+"','"+lc.getPrecioTLC()+"');";
 
 		try {
 

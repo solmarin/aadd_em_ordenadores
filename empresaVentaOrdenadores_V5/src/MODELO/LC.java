@@ -26,6 +26,7 @@ public class LC {
 			this.statusLC = statusLC;
 			this.precioU = precioU;
 			this.idArticulo = idArticulo;
+			this.getPrecioTLC();
 		}
 		
 	//constructor xml
@@ -35,6 +36,7 @@ public class LC {
 			this.unidades = unidades;
 			this.unidadesServidas = unidadesServidas;
 			this.statusLC = statusLC;
+			this.getPrecioTLC();
 		}
 		
 	//Metodos

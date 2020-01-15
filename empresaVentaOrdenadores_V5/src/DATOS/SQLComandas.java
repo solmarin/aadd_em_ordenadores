@@ -35,10 +35,14 @@ public void insertaComandas(Comanda co) throws SQLException {
 	
 		
 		String sqlInsert = "INSERT INTO comandas(idComanda, idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdComanda()+"','"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
-
+		 ArrayList<LC> lineasComandas = co.getProductosSeleccionados();
+		 SQLLCs sqllcs = new SQLLCs();
 		try {
 
 			conectar();
+			for(int i=0; i<lineasComandas.size(); ++i) {
+				 sqllcs.insertaLC(lineasComandas.get(i));
+			  }
 			sentencia = c.createStatement();
 			sentencia.executeUpdate(sqlInsert);
 			sentencia.close();
