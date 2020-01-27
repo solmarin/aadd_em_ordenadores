@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <comandes>
-	<comanda idC='1' idCliente="1111" statusComanda="B">  
+	<comanda idC='1' idCliente="1111" statusComanda="A">  
 	   <lc articulo="01">
 	      <unidades>500</unidades>  
 	      <unidadesServidas>0</unidadesServidas>
@@ -31,6 +31,11 @@
 	      <statusLC>0</statusLC>
 	   </lc>   
 	   <lc articulo="01">
+	      <unidades>350</unidades>      
+	      <unidadesServidas>0</unidadesServidas>
+	      <statusLC>0</statusLC>
+	   </lc>  
+	    <lc articulo="4">
 	      <unidades>350</unidades>      
 	      <unidadesServidas>0</unidadesServidas>
 	      <statusLC>0</statusLC>

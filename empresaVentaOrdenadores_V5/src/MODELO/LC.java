@@ -17,7 +17,7 @@ public class LC {
 		private double precioTLC;
 		
 	//Constructor
-		public LC(int idLC, int idC, int idArticulo, int unidades, int unidadesServidas, int statusLC) {
+		public LC(int idC, int idLC,int idArticulo, int unidades, int unidadesServidas, int statusLC) {
 			super();
 			this.idC = idC;
 			this.idLC = idLC;
@@ -28,17 +28,7 @@ public class LC {
 			this.idArticulo = idArticulo;
 			this.getPrecioTLC();
 		}
-		
-	//constructor xml
-		public LC(int idC, int idArticulo, int unidades, int unidadesServidas, int statusLC) {
-			this.idC = idC;
-			this.idArticulo = idArticulo;
-			this.unidades = unidades;
-			this.unidadesServidas = unidadesServidas;
-			this.statusLC = statusLC;
-			this.getPrecioTLC();
-		}
-		
+
 	//Metodos
 		public int getIdLC() {
 			return idLC;

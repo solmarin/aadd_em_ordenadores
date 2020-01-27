@@ -37,7 +37,7 @@ public class SQLLCs {
 	public void insertaLC(LC lc) throws SQLException {
 	
 		
-		String sqlInsert = "INSERT INTO LCS(idC, idArticulo, unidades, unidadesServidas, statusLC, precioLC) VALUES('"+lc.getIdC()+"','"+lc.getIdArticulo()+"','"+lc.getUnidades()+"','"+lc.getUnidadesServidas()+"','"+lc.getStatusLC()+"','"+lc.getPrecioTLC()+"');";
+ 		String sqlInsert = "INSERT INTO LCS(idLC, idC, idArticulo, unidades, unidadesServidas, statusLC, precioTLC) VALUES('"+lc.getIdLC()+"','"+lc.getIdC()+"','"+lc.getIdArticulo()+"','"+lc.getUnidades()+"','"+lc.getUnidadesServidas()+"','"+lc.getStatusLC()+"','"+lc.getPrecioTLC()+"');";
 
 		try {
 
@@ -74,9 +74,8 @@ public class SQLLCs {
 
 	}
 	
-	public void updateLCS(int idLC, int idC, int idArticulo, int unidades, int unidadesServidas, int statusLC) throws SQLException {
-		
-		String sqlUp = "UPDATE LCS SET idC = '"+idC+"', idAriculo ='"+idArticulo+"', unidades='"+unidades+"',unidadesServidas='"+unidadesServidas+"',statusLC='"+statusLC+"' WHERE idLC = '"+idLC+"'";
+	public void updateUS(int idLC, int idC, int unidadesServidas) {
+		String sqlUp = "UPDATE LCS SET unidadesServidas='"+unidadesServidas+"' WHERE idLC = '"+idLC+"' AND idC ='"+idC+"';";
 
 		try {
 
@@ -93,8 +92,29 @@ public class SQLLCs {
 		}
 
 	}
+	
+	public void updateStatus(int idLC, int idC, int status) {
+		String sqlUp = "UPDATE LCS SET statusLC='"+(status+1)+"' WHERE idLC = '"+idLC+"' AND idC ='"+idC+"';";
 
-	public ArrayList<LC> consultaLCS( int id) throws SQLException {
+		try {
+
+			conectar();
+			sentencia = c.createStatement();
+			sentencia.executeUpdate(sqlUp);
+			sentencia.close();
+			c.close();
+			System.out.println("Datos actualizados");
+
+		} catch (Exception e) {
+			JOptionPane.showConfirmDialog(null, "ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+			
+		}
+
+	}
+	
+	
+
+	public ArrayList<LC> consultaLCS(int id) throws SQLException {
 
 		conectar();
 		sentencia = c.createStatement();
@@ -112,7 +132,7 @@ public class SQLLCs {
 				int unidades = rs.getInt("unidades");
 				int unidadesServidas = rs.getInt("unidadesServidas");
 				int statusLC = rs.getInt("statusLC");
-				aLCs.add(new LC(idLC, idC, idArticulo, unidades, unidadesServidas, statusLC));
+				aLCs.add(new LC(idC,idLC, idArticulo, unidades, unidadesServidas, statusLC));
 
 			}
 		

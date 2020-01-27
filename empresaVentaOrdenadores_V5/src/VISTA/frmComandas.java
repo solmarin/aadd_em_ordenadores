@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -19,6 +20,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DATOS.LectorXML;
+import DATOS.SQLClientes;
 import DATOS.SQLComandas;
 import DATOS.SQLLCs;
 import MODELO.Comanda;
@@ -28,21 +30,38 @@ public class frmComandas {
 	int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2;
     int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2;
 	int seleccion;
+	boolean editar=false;
+	boolean save=false;
     public JFrame frmCo;
 	frmComandas window;
+	
 	JTextField txtGC;
+	JTextField txtUS;
+	JTextField txtEdit;
+	
 	Object[] titulos = {"idComanda", "idCliente", "Status", "Precio Total", "Fecha entrada", "Fecha Salida"};
 	Object[] titulos2 = {"idComanda", "idLC", "idArticulo","unidades", "unidades servidas", "status"};
 	Object[] celdas;
+	
 	JButton buttonXML;
+	JButton buttonEditar;
+	JButton buttonDesUS;
+	JButton buttonAugUS;
+	JButton buttonSave;
+	
 	JScrollPane scroll;
 	DefaultTableModel model; 
 	JTable table;
 	SQLComandas sqlcomandas;
+	
 	JScrollPane scroll2;
 	DefaultTableModel model2;
 	JTable table2;
 	SQLLCs sqllcs;
+	
+	int idC;
+	int idLC;
+	int status;
 
 	/**
 	* Launch the application.
@@ -145,40 +164,144 @@ public class frmComandas {
 			buttonXML.setBounds(10, 440, 200, 50);
 			frmCo.getContentPane().add(buttonXML);
 			
+		    
+			buttonEditar = new JButton("EDITAR U.S.");
+			buttonEditar.setFont(new Font("Dialog", Font.BOLD, 15));
+			buttonEditar.setBounds(215, 440, 150, 50);
+			buttonEditar.setEnabled(false);
+			frmCo.getContentPane().add(buttonEditar);
+
+		//boton guardar
+			buttonSave = new JButton("Guardar");
+			buttonSave.setFont(new Font("Dialog", Font.BOLD, 16));
+			buttonSave.setBounds(800, 440, 140, 50);
+			buttonSave.setEnabled(false);
+			frmCo.getContentPane().add(buttonSave);
+			
+		//cuadro txt para editar
+			txtEdit = new JTextField();
+			txtEdit.setFont(new Font("Dialog", Font.BOLD, 16));
+			txtEdit.setColumns(10);
+			txtEdit.setBounds(370, 440, 70, 50);
+			frmCo.getContentPane().add(txtEdit);
+			txtEdit.setEnabled(false);
+			txtEdit.setText("");
 			actualizarComandas();
 		    
 	}
 	
 	public void eventos() {
-			
-		buttonXML.addActionListener(new ActionListener() {
+		
+			buttonXML.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					 LectorXML lectorXML = new LectorXML();
-					 sqlcomandas = new SQLComandas();
-					 for(int i = 0; i< lectorXML.getCS().size(); ++i) sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
-					 actualizarComandas();
+						 LectorXML lectorXML = new LectorXML();
+						 sqlcomandas = new SQLComandas();
+						 for(int i = 0; i< lectorXML.getCS().size(); ++i) sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
+						 actualizarComandas();
+						 actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
+						 buttonEditar.setEnabled(false);
+						 editar=false;
+						 
 					 } catch (NumberFormatException | SQLException e) {
 							e.printStackTrace();
 					 }
 				
 				
 			}
-			
+		});
+	
+		buttonEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!save) {
+					buttonSave.setEnabled(true);
+					buttonEditar.setEnabled(false);
+					txtEdit.setEnabled(true);
+					buttonXML.setEnabled(false);
+				//	String.valueOf(table.getValueAt(seleccion, 0))
+					editar=true;
+					save=true;
+					
+				}
+
+			}
 		});
 		
-		
+
 	//mostrar en los campos txt las lc de la comanda selecionada
 	    table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(!save) {
+					seleccion = table.rowAtPoint(e.getPoint());
+					actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0)))); //mostramos lc con el id de la comanda
+					buttonEditar.setEnabled(false);
+					editar=false;
+					save=false;	
+			}
 				
-				seleccion = table.rowAtPoint(e.getPoint());
-				actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0)))); //mostramos lc con el id de la comanda
+			}
+		});
+	    
+	  //seleccionar una lc
+	    table2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(editar) {
+					buttonEditar.setEnabled(true);
+					txtEdit.setEnabled(false);
+					buttonSave.setEnabled(false);
+					buttonXML.setEnabled(true);					
+					editar=false;
+					save=false;
+
+				}else {
+					buttonEditar.setEnabled(true);
+					editar=false;
+					seleccion = table2.rowAtPoint(e.getPoint());
+					//table2.setCellSelectionEnabled(false);
+					
+				}
 				
+				idC = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 0);
+				idLC = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 1);
+				status = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 5);
+				txtEdit.setText(String.valueOf(table2.getValueAt(table2.rowAtPoint(e.getPoint()), 4)));
 			
 			}
 		});
+	    
+		
+		buttonSave.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				try {
+					if(editar) {
+						sqllcs = new SQLLCs();
+						editar=false;
+						save=false;
+						buttonEditar.setEnabled(false);
+						buttonSave.setEnabled(false);
+						txtEdit.setEnabled(false);
+						buttonXML.setEnabled(true);
+						editUS();
+						
+						if(Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) == Integer.parseInt(txtEdit.getText())) editStatusLC(1);
+						else if (Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) < Integer.parseInt(txtEdit.getText())) editStatusLC(-1);
+						else if (Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) > Integer.parseInt(txtEdit.getText())) editStatusLC(0);
+						
+						actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
+					
+
+								
+					}
+			
+					
+				}catch (NumberFormatException j) {
+					j.printStackTrace();
+				}
+			}
+		});
+		
 		
 	}
 	
@@ -211,8 +334,8 @@ public class frmComandas {
 			sqllcs = new SQLLCs();
 			for(LC c: sqllcs.consultaLCS(id)) {
 				if(c != null) {
-					int idLC = c.getIdLC();
 					int idC = c.getIdC();
+					int idLC = c.getIdLC();
 					int idArticulo = c.getIdArticulo();
 					int unidades = c.getUnidades();
 					int unidadesServidas = c.getUnidadesServidas();
@@ -227,5 +350,27 @@ public class frmComandas {
 	 }
 	}
 	
+	public void editUS() {
+		try {
+			sqllcs = new SQLLCs();
+			sqllcs.updateUS(idLC, idC, Integer.parseInt(txtEdit.getText()));
+			
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}	
+		
+	}
+	
+	public void editStatusLC(int status) {
+		try {
+			sqllcs = new SQLLCs();
+			sqllcs.updateStatus(idLC, idC, status);
+			
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}	
+		
+		
+	}
 }
 

@@ -49,6 +49,7 @@ public class LectorXML {
 							           
 							            lcs.add(new LC( //rellenamos el arraylist con una nueva linea de comanda
 							            		Integer.parseInt(eElementC.getAttribute("idC")),
+							            		lcs.size()+1,
 							            		Integer.parseInt(eElement.getAttribute("articulo")),
 							            		Integer.parseInt(eElement.getElementsByTagName("unidades").item(0).getTextContent()),
 							     				Integer.parseInt(eElement.getElementsByTagName("unidadesServidas").item(0).getTextContent()),
@@ -61,7 +62,7 @@ public class LectorXML {
 					       cs.add(new Comanda( //rellenamos el arraylist de comanda con una nueva comanda
 					    		   	  Integer.parseInt(eElementC.getAttribute("idC")),
 				    	    		  eElementC.getAttribute("idCliente").toString(),
-				    	    		  eElementC.getAttribute("statusComanda").charAt(0),
+				    	    		  'B', //cambiamos el status al introducirlo en la bbdd
 				    	    		  date.format(new Date()),
 				    	    		  0,
 				    	    		  this.getLCs()
