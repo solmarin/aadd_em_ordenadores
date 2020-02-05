@@ -1,7 +1,6 @@
 package DATOS;
 import MODELO.*;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.DocumentBuilderFactory;

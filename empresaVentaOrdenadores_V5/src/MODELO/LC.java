@@ -13,7 +13,6 @@ public class LC {
 		private int unidades;
 		private int unidadesServidas;
 		private int statusLC;
-		private double precioU;
 		private double precioTLC;
 		
 	//Constructor
@@ -24,9 +23,8 @@ public class LC {
 			this.unidades = unidades;
 			this.unidadesServidas = unidadesServidas;
 			this.statusLC = statusLC;
-			this.precioU = precioU;
 			this.idArticulo = idArticulo;
-			this.getPrecioTLC();
+			this.precioTLC = this.getPrecioTLC();
 		}
 
 	//Metodos
@@ -60,7 +58,7 @@ public class LC {
 		}
 
 		public void setStatusLC(int statusLC) {
-			statusLC = statusLC;
+			this.statusLC = statusLC;
 		}
 
 		public int getUnidadesServidas() {
@@ -71,23 +69,11 @@ public class LC {
 			this.unidadesServidas = unidadesServidas;
 		}
 		
-		public double getPrecioU() {
-			return precioU;
-		}
-
-		public void setPrecioU(double precioU) {
-			this.precioU = precioU;
-		}
 		
 		public double getPrecioTLC() {
-			this.setPrecioTLC();
-			return precioTLC;
+			return this.precioTLC;
 		}
 
-		public void setPrecioTLC() {
-			this.precioTLC = this.precioU*this.getUnidades();
-		}
-		
 
 		public int getIdArticulo() {
 			return idArticulo;
@@ -102,7 +88,7 @@ public class LC {
 		}
 
 		public void setPrecioTLC(double precioTLC) {
-			this.precioTLC = precioTLC;
+			this.precioTLC = (double)precioTLC*(double)this.getUnidades();
 		}
 
 		@Override

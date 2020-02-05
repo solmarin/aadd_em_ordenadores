@@ -11,34 +11,35 @@ public class Comanda {
 	//Atributos
 		private int idComanda;
 		private String idCliente;
-		private double precioTotal = 0;
+		private double precioTotal;
 		private char statusComanda;
 		private String fechaE;
 		private String fechaF;
 		private ArrayList<LC> productosSeleccionados = new ArrayList<LC>();
 
 		
-	//Constructors
+	//Constructor xml
 		public Comanda(int idComanda,String idCliente, char statusComanda,String fechaE, double preuTotal, ArrayList<LC>productosSeleccionados) {
 			super();
 			this.idComanda = idComanda;
 			this.idCliente = idCliente;
 			this.statusComanda = statusComanda;
 			this.fechaE = fechaE;
-			this.precioTotal = preuTotal;
+			this.precioTotal = this.getPrecioTotal();
 			this.productosSeleccionados = productosSeleccionados;
 			
 		}
 		
 
-	//constructor xml
-		public Comanda(int idComanda, String idCliente, String fechaE,char statusComanda, double preuTotal) {
+	//constructor sql
+		public Comanda(int idComanda, String idCliente, String fechaE,char statusComanda, double preuTotal, String fechaF) {
 			super();
 			this.idComanda = idComanda;
 			this.idCliente = idCliente;
 			this.statusComanda = statusComanda;
 			this.fechaE = fechaE;
 			this.precioTotal = preuTotal;
+			this.fechaF = fechaF;
 		}
 		
 	//Metodos
@@ -82,7 +83,7 @@ public class Comanda {
 		public void setFechaF(String fechaF) {
 			this.fechaF = fechaF;
 		}
-
+		
 		public double getPrecioTotal () {
 			for(LC lc : productosSeleccionados) precioTotal += lc.getPrecioTLC();			
 			return precioTotal;
@@ -96,15 +97,6 @@ public class Comanda {
 			this.productosSeleccionados = productosSeleccionados;
 		}
 		
-		public void omplirComandes(ArrayList<Comanda> cs) {
-			for(int i=0; i < cs.size(); i++) {
-				this.setIdCliente(cs.get(i).idCliente);
-				this.setIdComanda(cs.get(i).idComanda);
-				this.setFechaE(cs.get(i).fechaE);
-				this.setStatusComanda(cs.get(i).statusComanda);
-				this.setProductosSeleccionados(cs.get(i).productosSeleccionados);
-			}
-		}
 		
 		@Override
 		public String toString() {

@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import MODELO.Articulo;
-import MODELO.Cliente;
-
 public class SQLArticulos {
 
 	Connection c = null;
@@ -121,6 +119,32 @@ public class SQLArticulos {
 		}
 		return aArticulos;
 
+	}
+	
+	public double consultarPrecio(int id) throws SQLException {
+
+		conectar();
+		sentencia = c.createStatement();
+		String consultaSql = "SELECT precioVenta FROM Articulos WHERE idArticulo='"+id+"';";
+		double precio = 0.0;
+		try {
+
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+
+			while (rs.next()) {
+				 precio = rs.getFloat("precioVenta");
+			}
+		
+			rs.close();
+			sentencia.close();
+			c.close();
+		 
+
+		} catch (Exception e) {
+			JOptionPane.showConfirmDialog(null, "ERROR AL RECUPERAR DATOS: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+			
+		}
+		return precio;
 	}
 
 	

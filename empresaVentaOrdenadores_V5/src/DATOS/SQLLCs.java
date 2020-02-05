@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
-import MODELO.Cliente;
 import MODELO.LC;
 
 public class SQLLCs {
@@ -33,7 +30,6 @@ public class SQLLCs {
 
 	}
 
-
 	public void insertaLC(LC lc) throws SQLException {
 	
 		
@@ -54,9 +50,9 @@ public class SQLLCs {
 
 	}
 	
-	public void deleteLCs(String id) throws SQLException {
+	public void deleteLCs(int id) throws SQLException {
 		
-		String sqlDelet = "DELETE FROM LCS WHERE idLC = '"+id+"'";
+		String sqlDelet = "DELETE FROM LCS WHERE idC = '"+id+"';";
 
 		try {
 
@@ -94,7 +90,7 @@ public class SQLLCs {
 	}
 	
 	public void updateStatus(int idLC, int idC, int status) {
-		String sqlUp = "UPDATE LCS SET statusLC='"+(status+1)+"' WHERE idLC = '"+idLC+"' AND idC ='"+idC+"';";
+		String sqlUp = "UPDATE LCS SET statusLC='"+status+"' WHERE idLC = '"+idLC+"' AND idC ='"+idC+"';";
 
 		try {
 
@@ -147,6 +143,27 @@ public class SQLLCs {
 		}
 		return aLCs;
 
+	}
+	
+	public int contStatus(int id) throws SQLException {
+
+		conectar();
+		sentencia = c.createStatement();
+		String consultaSql = "SELECT statusLC FROM LCS WHERE idC='"+id+"';";
+		int status=0;
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			while (rs.next()) {
+				if(rs.getInt("statusLC")==1)++status;
+			}
+		}catch (Exception e) {
+			JOptionPane.showConfirmDialog(null, "ERROR AL RECUPERAR DATOS: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+			
+		}
+		
+		return status;
+
+		
 	}
 
 }

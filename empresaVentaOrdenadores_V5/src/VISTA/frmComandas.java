@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,7 +20,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DATOS.LectorXML;
-import DATOS.SQLClientes;
 import DATOS.SQLComandas;
 import DATOS.SQLLCs;
 import MODELO.Comanda;
@@ -32,6 +31,7 @@ public class frmComandas {
 	int seleccion;
 	boolean editar=false;
 	boolean save=false;
+	boolean eliminar = false;
     public JFrame frmCo;
 	frmComandas window;
 	
@@ -48,6 +48,11 @@ public class frmComandas {
 	JButton buttonDesUS;
 	JButton buttonAugUS;
 	JButton buttonSave;
+	JButton buttonDel;
+	JButton buttonStatusB;
+	JButton buttonStatusT;
+	JButton buttonStatusC;
+	JButton buttonFS;
 	
 	JScrollPane scroll;
 	DefaultTableModel model; 
@@ -159,24 +164,60 @@ public class frmComandas {
 		    table2.getTableHeader().setReorderingAllowed(false);
 		    
 		  //bottones
-			buttonXML = new JButton("Insertar XML");
+			buttonXML = new JButton("INSERTAR XML");
 			buttonXML.setFont(new Font("Dialog", Font.BOLD, 18));
 			buttonXML.setBounds(10, 440, 200, 50);
 			frmCo.getContentPane().add(buttonXML);
 			
 		    
-			buttonEditar = new JButton("EDITAR U.S.");
-			buttonEditar.setFont(new Font("Dialog", Font.BOLD, 15));
+			buttonEditar = new JButton("UNIDADES SERVIDAS");
+			buttonEditar.setFont(new Font("Dialog", Font.PLAIN, 8));
 			buttonEditar.setBounds(215, 440, 150, 50);
 			buttonEditar.setEnabled(false);
 			frmCo.getContentPane().add(buttonEditar);
 
 		//boton guardar
-			buttonSave = new JButton("Guardar");
+			buttonSave = new JButton("GUARDAR");
 			buttonSave.setFont(new Font("Dialog", Font.BOLD, 16));
 			buttonSave.setBounds(800, 440, 140, 50);
 			buttonSave.setEnabled(false);
 			frmCo.getContentPane().add(buttonSave);
+			
+		//boton eliminar Comanda
+			buttonDel = new JButton("ELIMINAR COMANDA");
+			buttonDel.setFont(new Font("Dialog", Font.BOLD, 10));
+			buttonDel.setBounds(647, 440, 150, 50);
+			buttonDel.setEnabled(false);
+			frmCo.getContentPane().add(buttonDel);
+		
+		//boton status todas
+			buttonStatusT = new JButton("CMS. TODAS");
+			buttonStatusT.setFont(new Font("Dialog", Font.ITALIC, 8));
+			buttonStatusT.setBounds(10, 350, 110, 25);
+			buttonStatusT.setEnabled(true);
+			frmCo.getContentPane().add(buttonStatusT);
+			
+		//boton status B
+			buttonStatusB = new JButton("CMS. ABIERTAS");
+			buttonStatusB.setFont(new Font("Dialog", Font.ITALIC, 8));
+			buttonStatusB.setBounds(120, 350, 110, 25);
+			buttonStatusB.setEnabled(true);
+			frmCo.getContentPane().add(buttonStatusB);
+			
+		//boton status C
+			buttonStatusC = new JButton("CMS. CERRADAS");
+			buttonStatusC.setFont(new Font("Dialog", Font.ITALIC, 8));
+			buttonStatusC.setBounds(220, 350, 110, 25);
+			buttonStatusC.setEnabled(true);
+			frmCo.getContentPane().add(buttonStatusC);
+		
+		//boton grabar fecha salida
+			buttonFS = new JButton("GRB. FECHA SALIDA");
+			buttonFS.setFont(new Font("Dialog", Font.PLAIN, 8));
+			buttonFS.setBounds(445, 440, 150, 50);
+			buttonFS.setEnabled(false);
+			frmCo.getContentPane().add(buttonFS);
+			
 			
 		//cuadro txt para editar
 			txtEdit = new JTextField();
@@ -186,28 +227,26 @@ public class frmComandas {
 			frmCo.getContentPane().add(txtEdit);
 			txtEdit.setEnabled(false);
 			txtEdit.setText("");
-			actualizarComandas();
+			actualizarComandas('T');
+			
 		    
 	}
 	
 	public void eventos() {
 		
-			buttonXML.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-						 LectorXML lectorXML = new LectorXML();
-						 sqlcomandas = new SQLComandas();
-						 for(int i = 0; i< lectorXML.getCS().size(); ++i) sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
-						 actualizarComandas();
-						 actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
-						 buttonEditar.setEnabled(false);
-						 editar=false;
-						 
-					 } catch (NumberFormatException | SQLException e) {
-							e.printStackTrace();
-					 }
-				
-				
+		buttonXML.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			try {
+					 LectorXML lectorXML = new LectorXML();
+					 sqlcomandas = new SQLComandas();
+					 for(int i = 0; i< lectorXML.getCS().size(); ++i) sqlcomandas.insertaComandas(lectorXML.getCS().get(i));
+					 actualizarComandas('T');
+					 buttonEditar.setEnabled(false);
+					 editar=false;
+					 
+				 } catch (NumberFormatException | SQLException e) {
+						e.printStackTrace();
+				 }	
 			}
 		});
 	
@@ -216,11 +255,12 @@ public class frmComandas {
 				if(!save) {
 					buttonSave.setEnabled(true);
 					buttonEditar.setEnabled(false);
+					buttonDel.setEnabled(false);
 					txtEdit.setEnabled(true);
 					buttonXML.setEnabled(false);
-				//	String.valueOf(table.getValueAt(seleccion, 0))
 					editar=true;
 					save=true;
+					eliminar=false;
 					
 				}
 
@@ -228,6 +268,34 @@ public class frmComandas {
 		});
 		
 
+		buttonStatusT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actualizarComandas('T');
+
+			}
+		});
+		
+		buttonStatusB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actualizarComandas('B');
+
+			}
+		});
+		
+		buttonStatusC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actualizarComandas('C');
+
+			}
+		});
+
+		buttonFS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				upFechaS(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
+			}
+		});
+
+		
 	//mostrar en los campos txt las lc de la comanda selecionada
 	    table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -236,9 +304,11 @@ public class frmComandas {
 					seleccion = table.rowAtPoint(e.getPoint());
 					actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0)))); //mostramos lc con el id de la comanda
 					buttonEditar.setEnabled(false);
-					editar=false;
-					save=false;	
-			}
+					buttonDel.setEnabled(true);
+					
+					if(String.valueOf(table.getValueAt(seleccion, 2)).charAt(0)=='C' && String.valueOf(table.getValueAt(seleccion, 5))=="--" ) buttonFS.setEnabled(true);
+					else buttonFS.setEnabled(false);
+				}
 				
 			}
 		});
@@ -254,15 +324,17 @@ public class frmComandas {
 					buttonXML.setEnabled(true);					
 					editar=false;
 					save=false;
-
 				}else {
 					buttonEditar.setEnabled(true);
 					editar=false;
 					seleccion = table2.rowAtPoint(e.getPoint());
-					//table2.setCellSelectionEnabled(false);
 					
 				}
 				
+				buttonDel.setEnabled(false);
+				eliminar = false;
+				
+		// 		valores de variables 
 				idC = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 0);
 				idLC = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 1);
 				status = (Integer)table2.getValueAt(table2.rowAtPoint(e.getPoint()), 5);
@@ -271,10 +343,12 @@ public class frmComandas {
 			}
 		});
 	    
-		
+		//boton guardar y modificacion de lc status
 		buttonSave.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
 				try {
+	
+					 
 					if(editar) {
 						sqllcs = new SQLLCs();
 						editar=false;
@@ -285,31 +359,56 @@ public class frmComandas {
 						buttonXML.setEnabled(true);
 						editUS();
 						
-						if(Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) == Integer.parseInt(txtEdit.getText())) editStatusLC(1);
-						else if (Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) < Integer.parseInt(txtEdit.getText())) editStatusLC(-1);
-						else if (Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) > Integer.parseInt(txtEdit.getText())) editStatusLC(0);
+						//comparamos valores de las unidades servidas con las unidades que hay que servir y modificamos el campo status
+						if((Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) == Integer.parseInt(txtEdit.getText()))) editStatusLC(1);
+						else if ((Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) < Integer.parseInt(txtEdit.getText()))) editStatusLC(-1);
+						else if ((Integer.parseInt(String.valueOf(table2.getValueAt(seleccion, 3))) > Integer.parseInt(txtEdit.getText()))) editStatusLC(0);
 						
+						//actualizar lineas de comanda
 						actualizarLCs(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
-					
-
+						
+						//actualizar status Comanda
+						if(statusC(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))))) editStatusC('C');							
+						else editStatusC('B');
+						
+						actualizarComandas('T');
 								
+					}else if(eliminar) {
+						 int dialogResult = JOptionPane.showConfirmDialog (null, "Seguro que quieres eliminar la Comanda?","ELIMINAR COMANDA",JOptionPane.YES_NO_OPTION);
+						 if(dialogResult == JOptionPane.YES_OPTION) {
+							 eliminarComanda(Integer.parseInt(String.valueOf(table.getValueAt(seleccion, 0))));
+							 
+						 }	 
+							
 					}
-			
 					
-				}catch (NumberFormatException j) {
+					eliminar=false;
+					buttonDel.setEnabled(false);
+					buttonSave.setEnabled(false);
+					
+				}catch (NumberFormatException | SQLException j) {
 					j.printStackTrace();
 				}
 			}
 		});
 		
+		//boton eliminar comanda
+			buttonDel.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e){
+						buttonDel.setEnabled(false);
+						eliminar = true;
+						buttonSave.setEnabled(true);
+				}
+			});
+	
 		
 	}
 	
-	public void actualizarComandas() {
+	public void actualizarComandas(char tipo) {
 		try {
 			 model.setRowCount(0);
 			 sqlcomandas = new SQLComandas();
-			 for(Comanda c: sqlcomandas.consultaComandas()) {
+			 for(Comanda c: sqlcomandas.consultaComandas(tipo)) {
 			    	if(c != null) {
 				    	int idComanda =  c.getIdComanda();
 						String idCliente = c.getIdCliente();
@@ -329,7 +428,7 @@ public class frmComandas {
 	}
 	
 	public void actualizarLCs(int id) {
-		try {
+		try {			
 			model2.setRowCount(0);
 			sqllcs = new SQLLCs();
 			for(LC c: sqllcs.consultaLCS(id)) {
@@ -340,14 +439,15 @@ public class frmComandas {
 					int unidades = c.getUnidades();
 					int unidadesServidas = c.getUnidadesServidas();
 					int statusLC = c.getStatusLC();
-					
 					model2.addRow(new Object[] {idC, idLC, idArticulo, unidades, unidadesServidas, statusLC});
 				}
+				
 			}
 			
 		}catch (NumberFormatException | SQLException e) {
 			e.printStackTrace();
-	 }
+		}
+
 	}
 	
 	public void editUS() {
@@ -371,6 +471,70 @@ public class frmComandas {
 		}	
 		
 		
+	}
+	
+	public void editStatusC(char status) {
+		try {
+			sqlcomandas = new SQLComandas();
+			sqlcomandas.updateStatus(idC, status);
+		}catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean statusC(int id) throws SQLException {
+		int size = 0;
+		try {			
+			model2.setRowCount(0);
+			sqllcs = new SQLLCs();
+			for(LC c: sqllcs.consultaLCS(id)) {
+				if(c != null) size++;
+			}
+			
+			
+		}catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(size ==  sqllcs.contStatus(id)) return true;
+		else return false;
+		
+		
+	}
+	
+	public void eliminarComanda(int id) {
+		try {		
+			 eliminarLCs(id);
+			 actualizarLCs(id);
+			 sqlcomandas = new SQLComandas();
+			 sqlcomandas.deleteComanda(id);
+			 actualizarComandas('T');
+
+		}catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void eliminarLCs(int id) {
+		try {			
+			 sqllcs = new SQLLCs();
+			 sqllcs.deleteLCs(id);
+			
+		}catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void upFechaS(int id) {
+		try {			
+			 sqlcomandas = new SQLComandas();
+			 sqlcomandas.updateFechaS(id);
+			 actualizarComandas('T');
+			
+		}catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
 	}
 }
 

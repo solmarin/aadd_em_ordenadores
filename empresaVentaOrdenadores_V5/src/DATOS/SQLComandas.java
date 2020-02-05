@@ -4,9 +4,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JOptionPane;
-import MODELO.Cliente;
 import MODELO.Comanda;
 import MODELO.LC;
 
@@ -15,6 +17,7 @@ public class SQLComandas {
 	Connection c = null;
 	Statement sentencia = null;
 	ArrayList<Comanda> aComandas = new ArrayList <Comanda>(); 
+	SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
 
 	public void conectar() {
 
@@ -32,10 +35,19 @@ public class SQLComandas {
 	}
 	
 public void insertaComandas(Comanda co) throws SQLException {
-	
-		
-		String sqlInsert = "INSERT INTO comandas(idComanda, idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdComanda()+"','"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
+		//update lc: añadir precio lc 
+		SQLArticulos sqlA = new SQLArticulos();
 		ArrayList<LC> lineasComandas = co.getProductosSeleccionados();
+		for(LC lc : lineasComandas) {
+			int id = lc.getIdArticulo();
+			if((Integer)id != null) {
+				lc.setPrecioTLC(sqlA.consultarPrecio(id));
+			}
+		}
+		
+		
+		//insertar lcs y comandas
+		String sqlInsert;
 		SQLLCs sqllcs = new SQLLCs();
 		try {
 
@@ -43,6 +55,9 @@ public void insertaComandas(Comanda co) throws SQLException {
 			for(int i=0; i<lineasComandas.size(); ++i) {
 				 sqllcs.insertaLC(lineasComandas.get(i));
 			  }
+			
+			sqlInsert = "INSERT INTO comandas(idComanda, idCliente, statusComanda, precioTotal, fechaE) VALUES ('"+co.getIdComanda()+"','"+co.getIdCliente()+"','"+co.getStatusComanda()+"','"+co.getPrecioTotal()+"','"+co.getFechaE()+"');";
+
 			sentencia = c.createStatement();
 			sentencia.executeUpdate(sqlInsert);
 			sentencia.close();
@@ -55,9 +70,9 @@ public void insertaComandas(Comanda co) throws SQLException {
 
 	}
 
-public void deleteComanda(String id) throws SQLException {
+public void deleteComanda(int id) throws SQLException {
 	
-	String sqlDelet = "DELETE FROM comandas WHERE idC = '"+id+"'";
+	String sqlDelet = "DELETE FROM comandas WHERE idComanda = '"+id+"';";
 
 	try {
 
@@ -75,10 +90,10 @@ public void deleteComanda(String id) throws SQLException {
 
 }
 
-public void updateComanda(int idC, int idCliente, String fechaE, int statusComanda, double preuTotal ) throws SQLException {
-	
-	String sqlUp = "UPDATE comandas SET idCliente ='"+idCliente+"', fechaE = '"+fechaE+"', statusComanda ='"+statusComanda+"', preuTotal='"+preuTotal+"' WHERE idC = '"+idC+"'";
 
+public void updateStatus(int idC, char status) {
+	String sqlUp = "UPDATE comandas SET statusComanda='"+status+"' WHERE idComanda = '"+idC+"';";
+	
 	try {
 
 		conectar();
@@ -92,14 +107,36 @@ public void updateComanda(int idC, int idCliente, String fechaE, int statusComan
 		JOptionPane.showConfirmDialog(null, "ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
 		
 	}
-
 }
 
-public ArrayList<Comanda> consultaComandas() throws SQLException {
+public void updateFechaS(int idC) {
+	
+	String sqlUp = "UPDATE comandas SET fechaF='"+date.format(new Date())+"' WHERE idComanda = '"+idC+"';";
+	
+	try {
+
+		conectar();
+		sentencia = c.createStatement();
+		sentencia.executeUpdate(sqlUp);
+		sentencia.close();
+		c.close();
+		System.out.println("Datos actualizados");
+
+	} catch (Exception e) {
+		JOptionPane.showConfirmDialog(null, "ERROR AL ACTUALIZAR DATOS EN LA TABLA: "+e.getMessage(), "Warning!", JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE);
+		
+	}
+}
+
+
+public ArrayList<Comanda> consultaComandas(char tipo) throws SQLException {
 
 	conectar();
 	sentencia = c.createStatement();
-	String consultaSql = "SELECT * FROM comandas;";
+	 String consultaSql = "SELECT * FROM comandas ORDER BY fechaE ASC;";
+	 
+	if (tipo == 'B') consultaSql = "SELECT * FROM comandas WHERE statusComanda='B' ORDER BY fechaE ASC;";
+	else if(tipo == 'C') consultaSql = "SELECT * FROM comandas WHERE statusComanda='C' ORDER BY fechaE ASC;";
 
 	try {
 
@@ -110,9 +147,9 @@ public ArrayList<Comanda> consultaComandas() throws SQLException {
 			String idCliente = rs.getString("idCliente");
 			String fechaE = rs.getString("fechaE");
 			char statusComanda = rs.getString("statusComanda").charAt(0);
-			int precioTotal = rs.getInt("precioTotal");
-			
-			aComandas.add(new Comanda(idComanda, idCliente,fechaE,statusComanda,precioTotal));
+			double precioTotal = rs.getDouble("precioTotal");
+			String fechaF = rs.getString("fechaF");
+			aComandas.add(new Comanda(idComanda, idCliente,fechaE,statusComanda,precioTotal,fechaF));
 
 		}
 	
